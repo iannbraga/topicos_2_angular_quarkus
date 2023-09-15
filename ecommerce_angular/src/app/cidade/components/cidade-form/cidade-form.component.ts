@@ -25,11 +25,13 @@ export class CidadeFormComponent implements OnInit {
     const cidade: Cidade = this.activatedRoute.snapshot.data['cidade'];
 
     this.formGroup = formBuilder.group({
-      id:[(cidade && cidade.id) ? cidade.id : null],
-      nome:[(cidade && cidade.nome) ? cidade.nome : '', Validators.required],
-      estado:[(cidade && cidade.estado) ? cidade.estado : null, Validators.required]
-    })
-
+      id: [cidade && cidade.id ? cidade.id : null],
+      nome: [cidade && cidade.nome ? cidade.nome : '', Validators.required],
+      estado: [
+        cidade && cidade.estado && cidade.estado.id ? cidade.estado.id : null,
+        Validators.required,
+      ],
+    });
   }
 
   ngOnInit(): void {
@@ -48,7 +50,7 @@ export class CidadeFormComponent implements OnInit {
           },
           error: (err) => {
             console.log('Erro ao incluir' + JSON.stringify(err));
-          }
+          },
         });
       } else {
         this.cidadeService.update(cidade).subscribe({
@@ -57,7 +59,7 @@ export class CidadeFormComponent implements OnInit {
           },
           error: (err) => {
             console.log('Erro ao alterar' + JSON.stringify(err));
-          }
+          },
         });
       }
     }
@@ -72,7 +74,7 @@ export class CidadeFormComponent implements OnInit {
         },
         error: (err) => {
           console.log('Erro ao excluir' + JSON.stringify(err));
-        }
+        },
       });
     }
   }
